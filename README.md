@@ -5,3 +5,4 @@ Integrantes:
   Morales Flores Luis Enrique
   Sánchez Estrada Alejandro
   Acevedo Romero Miroslava
+  Rivera Lara Sandra Valeria
