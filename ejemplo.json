@@ -1,0 +1,52 @@
+[
+    {
+        "id": 833,
+        "name": "Ḩeşār-e Sefīd",
+        "state": "",
+        "country": "IR",
+        "coord": {
+            "lon": 47.159401,
+            "lat": 34.330502
+        }
+    },
+    {
+        "id": 2960,
+        "name": "‘Ayn Ḩalāqīm",
+        "state": "",
+        "country": "SY",
+        "coord": {
+            "lon": 36.321911,
+            "lat": 34.940079
+        }
+    },
+    {
+        "id": 78112,
+        "name": "Marbat",
+        "state": "",
+        "country": "AA",
+        "coord": {
+            "lon": 46.388111,
+            "lat": 14.20567
+        }
+    },
+    {
+        "id": 78112,
+        "name": "Marbat",
+        "state": "",
+        "country": "YE",
+        "coord": {
+            "lon": 46.388111,
+            "lat": 14.20567
+        }
+    },
+    {
+        "id": 78137,
+        "name": "Ar Rawdah",
+        "state": "",
+        "country": "YE",
+        "coord": {
+            "lon": 44.223991,
+            "lat": 15.43251
+        }
+    }
+]
