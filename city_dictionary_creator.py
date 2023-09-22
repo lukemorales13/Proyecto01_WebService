@@ -42,7 +42,7 @@ def create_dictionary(parsed_json):
         cities_dictionary[normalize_name(city['name'])[0]][city['name']].append(city['country'])
     
     print('####### Dictionary created #######')
-    print()    
+    print()
     return cities_dictionary
 
 def create_file(pklfile, cities_dictionary):
@@ -52,7 +52,7 @@ def create_file(pklfile, cities_dictionary):
     with open(pklfile, 'wb') as file_out:
         pickle.dump(cities_dictionary, file_out)
         
-    print('####### File "ciudades.pkl" created #######')
+    print("####### File '", pklfile, "' created #######")
     print()    
 
 
