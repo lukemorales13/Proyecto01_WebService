@@ -112,27 +112,47 @@ def city_search(word):
     print('CITY ##########')
     return short_search(word, 5, 3, 1)
 
-def massive_search(word, num_words):
+def massive_search(word, num_words, max_level):
     print('MASSIVE ##########')
     cities_dictionary = import_pkl('ciudades.pkl')
 
-    max_level = 4
     dict_distance = {}
     for location in cities_dictionary:
         location_distance = int(levenshtein_distance(word, location))
         if (location_distance <= max_level):
+
+            if (location_distance == 0):
+                print('location: ', location)
+                closest_locations = []
+                for country in cities_dictionary[location]:
+                    closest_locations.append([location, country])
+                return closest_locations
+            
             if not location_distance in dict_distance:
-                dict_distance[location_distance] = []
-            dict_distance[location_distance].append(location)
+                dict_distance[location_distance] = {}
+            dict_distance[location_distance][location] = cities_dictionary[location]
     
     print(dict_distance.keys())
     print(dict_distance)
-    return closest_words(num_words, 1, max_level, dict_distance, [])
+    
+    return closest_wordsM(num_words, 1, max_level, dict_distance, [])
+
+def closest_wordsM(num_words, level, max_level, dict_distance, closest_locations):
+    if(level <= max_level):
+        if level in dict_distance:
+            for location in dict_distance[level]:
+                for country in dict_distance[level][location]:
+                    closest_locations.append([location, country])
+                    num_words = num_words - 1
+                if (num_words == 0):
+                    return closest_locations
+        return closest_wordsM(num_words, level+1, max_level, dict_distance, closest_locations)
+    return closest_locations
 
 
 ####### PRUEBAS #######
-location = "MONTERREY"
-print(massive_search(location, 10))
+location = "Taglag"
+print(massive_search(location, 10, 3))
 print()
 print("iata search: ", iata_search('mty'))
 print()
