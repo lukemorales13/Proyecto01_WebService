@@ -6,6 +6,12 @@ import re
 import unidecode
 
 def levenshtein_distance(token1, token2):
+    
+    token1 = normalize_name(token1)
+    token2 = normalize_name(token2)
+
+#    print(token1, "  ", token2)
+
     distances = numpy.zeros((len(token1) + 1, len(token2) + 1))
 
     for t1 in range(len(token1) + 1):
@@ -34,7 +40,7 @@ def levenshtein_distance(token1, token2):
                 else:
                     distances[t1][t2] = c + 1
 
-#    printDistances(distances, len(token1), len(token2))
+#    print_distances(distances, len(token1), len(token2))
     return distances[len(token1)][len(token2)]
 
 def print_distances(distances, token1Length, token2Length):
@@ -42,7 +48,6 @@ def print_distances(distances, token1Length, token2Length):
         for t2 in range(token2Length + 1):
             print(int(distances[t1][t2]), end=" ")
         print()
-
 
 def normalize_name(name):
     new_name = unidecode.unidecode(name)
@@ -86,7 +91,18 @@ def closest_words(num_words, level, max_level, dict_distance, closest_locations)
 
 def short_search(word, num_words, max_distance, type):
     iata_list = import_pkl('iata_list.pkl')
-    return calculate_distance(word, num_words, max_distance, type, iata_list)
+    exact_location = get_location(word, type, iata_list)
+    if(exact_location == []):
+        return calculate_distance(word, num_words, max_distance, type, iata_list)
+    else:
+        return exact_location
+    
+def get_location(word, type, location_data):
+    for location in location_data:
+        location_distance = int(levenshtein_distance(word, location[type]))
+        if (location_distance == 0):
+            return location
+    return []
 
 def iata_search(word):
     print('IATA ##########')
@@ -94,7 +110,7 @@ def iata_search(word):
 
 def city_search(word):
     print('CITY ##########')
-    return short_search(word, 5, 4, 1)
+    return short_search(word, 5, 3, 1)
 
 def massive_search(word, num_words):
     print('MASSIVE ##########')
@@ -124,10 +140,10 @@ def massive_search(word, num_words):
 
 
 ####### PRUEBAS #######
-location = "Jalapa"
+location = "MONTERREY"
 print(massive_search(location, 10))
 print()
-print("iata search: ", iata_search('MY'))
+print("iata search: ", iata_search('mty'))
 print()
-print("city search: ", city_search('Jalapa'))
+print("city search: ", city_search(location))
 print()
