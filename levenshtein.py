@@ -5,7 +5,7 @@ import pickle
 import re
 import unidecode
 
-def levenshteinDistanceDP(token1, token2):
+def levenshtein_distance(token1, token2):
     distances = numpy.zeros((len(token1) + 1, len(token2) + 1))
 
     for t1 in range(len(token1) + 1):
@@ -37,8 +37,7 @@ def levenshteinDistanceDP(token1, token2):
 #    printDistances(distances, len(token1), len(token2))
     return distances[len(token1)][len(token2)]
 
-
-def printDistances(distances, token1Length, token2Length):
+def print_distances(distances, token1Length, token2Length):
     for t1 in range(token1Length + 1):
         for t2 in range(token2Length + 1):
             print(int(distances[t1][t2]), end=" ")
@@ -53,36 +52,47 @@ def normalize_name(name):
         return new_name
     else:
         return name
-    
-    
-def calcDictDistance(word, numWords):
-    
-    with open('ciudades.pkl', 'rb') as file_dictionary:
-        cities_dictionary = pickle.load(file_dictionary)
-    
-    dictWordDist = []
+
+def import_pkl(pkl_file):
+    with open(pkl_file, 'rb') as file_in:
+        location_data = pickle.load(file_in)
+    return location_data
+
+def calculate_distance(word, location_data):
+    list_distance = []
     wordIdx = 0
 
 ######## Ver excepcion si la primera letra no esta #########
-    for city in cities_dictionary[normalize_name(word)[0]]:
-        wordDistance = levenshteinDistanceDP(word, city)
-        if wordDistance >= 10:
-            wordDistance = 9
-        dictWordDist.append(str(int(wordDistance)) + "-" + city)
+    for city in location_data:
+        word_distance = levenshtein_distance(word, city)
+        if word_distance >= 10:
+            word_distance = 9
+        list_distance.append(str(int(word_distance)) + "-" + city)
         wordIdx = wordIdx + 1
+    
+    return list_distance
 
+def closest_words(num_words, location_data, list_distance):
     closestWords = {}
     wordDetails = []
     currWordDist = 0
-    dictWordDist.sort()
+    list_distance.sort()
 
-    for i in range(numWords):
-        currWordDist = dictWordDist[i]
+    for i in range(num_words):
+        currWordDist = list_distance[i]
         wordDetails = currWordDist.split("-")
-        closestWords[wordDetails[1]] = cities_dictionary[normalize_name(word)[0]][wordDetails[1]]
+        closestWords[wordDetails[1]] = location_data[wordDetails[1]]
 
     return closestWords 
 
+
+def massive_search(word, num_Words):
+    cities_dictionary = import_pkl('ciudades.pkl')
+    cities_distance = calculate_distance(word, cities_dictionary[normalize_name(word)[0]])
+    return closest_words(num_Words, cities_dictionary[normalize_name(word)[0]], cities_distance)
+
+
+
 city = "Monterrey"
-print(calcDictDistance(city, 10))
+print(massive_search(city, 10))
 print()
