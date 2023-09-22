@@ -83,7 +83,7 @@ def create_csv():
 
 def create_pkl(pklfile, location_list):
     print("####### Creating file '", pklfile, "' #######")
-    print()    
+    print()
 
     with open(pklfile, 'wb') as file_out:
         pickle.dump(location_list, file_out)

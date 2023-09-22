@@ -123,10 +123,11 @@ def massive_search(word, num_words):
     return closestWords 
 
 
-location = "Monterrey"
+####### PRUEBAS #######
+location = "Jalapa"
 print(massive_search(location, 10))
 print()
 print("iata search: ", iata_search('MY'))
 print()
-print("city search: ", city_search('Vercruz'))
+print("city search: ", city_search('Jalapa'))
 print()
