@@ -16,30 +16,17 @@ def create_list(jsonfile):
     print()
     return parsed_json
 
-def normalize_name(name):
-    new_name = unidecode.unidecode(name)
-    new_name = re.sub("[^A-Z]", "", name, 0,re.IGNORECASE)
-    new_name = new_name.upper()
-    if (len(new_name) > 0):
-        return new_name
-    else:
-        return name
-
 def create_dictionary(parsed_json):
     print('####### Creating dictionary #######')
     print()    
 
     cities_dictionary = {}
     for city in parsed_json:
-        cities_dictionary[normalize_name(city['name'])[0]] = {}
-
-    for city in parsed_json:
-        cities_dictionary[normalize_name(city['name'])[0]][city['name']] = []
-        
-    for city in parsed_json:
-        if city['country'] in cities_dictionary[normalize_name(city['name'])[0]][city['name']]:
+        if not city['name'] in cities_dictionary:
+            cities_dictionary[city['name']] = []
+        if city['country'] in cities_dictionary[city['name']]:
             continue
-        cities_dictionary[normalize_name(city['name'])[0]][city['name']].append(city['country'])
+        cities_dictionary[city['name']].append(city['country'])
     
     print('####### Dictionary created #######')
     print()
