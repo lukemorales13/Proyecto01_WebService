@@ -10,6 +10,32 @@ body {
     vertical-align: middle;
 }
 
+/*
+# Ini Section
+*/
+
+.ini form {
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .ini form .form-control {
+    padding-top: 18px;
+    padding-bottom: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: none;
+    margin-right: 10px;
+    border: none !important;
+    background: none !important;
+  }
+  
+  .ini form .form-control:hover,
+  .ini form .form-control:focus {
+    outline: none;
+    box-shadow: none;
+  }
 /* Establecer el color de texto en azul fuerte para la barra de navegación */
 .navbar-nav {
     color: #007bff; /* Color azul fuerte */
