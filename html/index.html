@@ -3,41 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto</title>
+    <title>Airport</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 
-     <!-- Enlaza el archivo CSS personalizado para la card -->
+     <!-- Enlaza el archivo CSS-->
      <link href="/css/styles.css" rel="stylesheet" />
 
 </head>
 <body>
-    <!--NAVBAR -->
-    <header class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="50">
-      <div class="container">
-        <a href="" class="btn"></a>
-      </div>
-    </header>
+  <!--PRELOADER-->
+  <div class="preloader-wrapper">
+    <div class="spinner-grow text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/html/index.html">
+        <img src="/assets/airplane.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+        AX-plane
+      </a>
+    </div>
+  </nav>
 
 <section id="ini" class="ini d-flex align-items-center">
 <div class="container mt-5 my-3">
-    <div class="row">
-        <div class="col-md-8"> <!-- Aumenta el tamaño de la columna a col-md-8 -->
+    <div class="row gy-4 d-flex justify-content-between">
+
+        <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center"> 
+          <!--TEXT-->
+          <h2 data-aos="fade-up">Your Lightning Fast Delivery Partner</h2>
+          <p data-aos="fade-up" data-aos-delay="100">Facere distinctio molestiae nisi fugit tenetur repellat non praesentium nesciunt optio quis sit odio nemo quisquam. eius quos reiciendis eum vel eum voluptatem eum maiores eaque id optio ullam occaecati odio est possimus vel reprehenderit</p>
+
+          <!--FORM-->
           <form action="#" class="form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
             <input type="text" class="form-control" placeholder="IATA Code or City">
             <button type="submit" class="btn btn-primary">Search</button>
           </form>
         </div>
-        <div class="col-md-4"> <!-- Aumenta el tamaño de la columna a col-md-4 -->
-            <!-- Tarjeta (Card) para mostrar datos meteorológicos -->
-            <div class="card custom-card">
-                <img src="/assets/temperature.jpg" class="card-img-top" alt="Imagen de ejemplo"> <!-- Agrega la imagen -->
-                <div class="card-body">
-                    <h5 class="card-title">Datos Meteorológicos</h5>
-                    <p class="card-text">Temperatura: <span id="temperature"></span>°C</p>
-                    <p class="card-text">Descripción: <span id="description"></span></p>
-                </div>
-            </div>
-        </div>
+
+        <!-- CARD-->
+    <div class="card border-0 col-md-4">
+      <div class="position-relative">
+        <img src="/assets/climate.jpg" alt="Imagen de fondo" class="img-fluid card-img-top" />
+        <div class="card-img-overlay ">
+          <span class="badge badge-warning text-uppercase">CLIMA</span></div>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Datos Meteorológicos</h5>
+        <h6 class="card-subtitle mb-2 text-muted"> 
+          <div id="current-date">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+            <script>
+              moment.locale('es');
+
+              const formattedDate = moment().format('LL');
+              document.getElementById("current-date").innerHTML = formattedDate;
+            </script>
+          </div>
+        </h6>
+        <p class="card-text mt-4">Temperatura: <span id="temperature"></span>°C</p>
+        <p class="card-text mt-4">Descripción: <span id="description"></span></p>
+      </div>
+    </div>
+
     </div>
 </div>
 </section>

@@ -1,8 +1,31 @@
-body {
-    background: #4CA1AF;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #C4E0E5, #4CA1AF);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #C4E0E5, #4CA1AF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+/* 
+ # Preloader
+*/
 
+.preloader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: cross-fade('/assets/fondo1.jpg');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .4s ease;
+}
+
+.fade-out-animation {
+    opacity: 0;
+    visibility: hidden;
+}
+
+body {
+    background-image: url('/assets/fondo1.jpg'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    background-color: rgba(255, 255, 255, 0.5); /* Color de fondo semi transparente (blanco en este caso) */
 }
 
 .centered  {
@@ -11,16 +34,36 @@ body {
 }
 
 /*
-# Ini Section
+ # Navbar 
+*/
+/* Navbar transparente */
+.navbar {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-align: center;
+}
+
+/* Estilo de fuente para la barra de navegación */
+.navbar a {
+    font-family: Arial, sans-serif; /* Cambia la fuente según tus preferencias */
+    font-size: 24px; /* Tamaño de fuente mediano */
+    font-weight: bold;
+    margin-left: 25px;
+}
+
+
+/*
+ # Ini Section
 */
 
 .ini form {
     background: #fff;
     padding: 10px;
     border-radius: 10px;
-  }
+}
   
-  .ini form .form-control {
+.ini form .form-control {
     padding-top: 18px;
     padding-bottom: 18px;
     padding-left: 20px;
@@ -29,36 +72,51 @@ body {
     margin-right: 10px;
     border: none !important;
     background: none !important;
-  }
+}
   
-  .ini form .form-control:hover,
-  .ini form .form-control:focus {
+.ini form .form-control:hover,
+.ini form .form-control:focus {
     outline: none;
     box-shadow: none;
+}
+
+/* CARD */
+/* Estilos para la tarjeta */
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
   }
-/* Establecer el color de texto en azul fuerte para la barra de navegación */
-.navbar-nav {
-    color: #007bff; /* Color azul fuerte */
-}
-
-/* Estilo personalizado para la tarjeta (card) */
-.custom-card {
-    background-color: #f8f9fa; /* Color de fondo personalizado */
-    border: 2px solid #007bff; /* Borde personalizado */
-    border-radius: 10px; /* Borde redondeado */
-    padding: 10px; /* Espaciado interno */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra personalizada */
-}
-
-/* Estilo para el contenido de la tarjeta */
-.custom-card .card-title {
-    font-size: 18px;
-    margin-bottom: 8px;
-    color: #007bff; /* Color del título */
-}
-
-.custom-card .card-text {
-    font-size: 16px;
-    margin-bottom: 4px;
-}
-
+  
+  
+  /* Estilos para el título */
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilos para la fecha */
+  .card-subtitle {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 15px;
+  }
+  
+  /* Estilos para el texto del cuerpo de la tarjeta */
+  .card-text {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  /* Estilos para el distintivo de moda */
+  .badge-warning {
+    background-color: #07daff;
+    color: #333;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 20px;
+  }
