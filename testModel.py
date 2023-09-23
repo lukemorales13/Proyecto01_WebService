@@ -1,61 +1,89 @@
 import unittest
-
 import requests
+import sys
+import time
 
+from methods import validLine
+from methods import readData
 
 
 class TestModel(unittest.TestCase):
 
-    @unittest.skip("Se implementará después, menor prioridad en tanto se use exclusivamente el dataset dado")
+    """
+    Prueba el procesamiento de las entradas (tickets).
+    Revisa si el programa procesa correctamente las entradas con formato
+    adecuado y si omite regresar las entradas no válidas.
+    """
+    
     def test_validLine(self):
         
         """
-        Prueba el procesamiento de las entradas (tickets).
-        Revisa si el programa procesa correctamente las entradas con formato
-        adecuado y si omite las entradas no válidas.
-
-        La función [nombre] debe hacer un request si el ticket es
-        válido, u omitir la línea presente para saltar a la siguiente línea, de
-        lo contrario.
+        Si la línea no es válida, debería saltar a la línea siguiente y no
+        regresar nada.
+        Aún debo decidir si evaluar que no pase nada o evaluar que arroje
+        una excepción, por lo mismo. Por el momento, dejo las pruebas sucias
+        de esta función comentadas.
         """
 
         """
-        self.assertTrue(procesa_ticket(None) == None)
-        self.assertTrue(procesa_ticket("") == None)
-        ticket = "C3NZsz5xBt82F4NJ	GDL	MEX	20.5218	-103.311
-	19.4363	-99.0721"
-        self.assertTrue(procesa_ticket(ticket) == None)
+        ticket = ""
+        with self.assertRaises(Exception):
+            validLine(ticket)
+        ticket = "a"
+        with self.assertRaises(Exception):
+            validLine(ticket)
+        ticket = "aaaaaaaaaaaaaaaa,bbb,ccc,d,e,f,g"
+        with self.assertRaises(Exception):
+            validLine(ticket)
+        ticket = "aaaaaaaaaaaaaaaa,1,2,3,4,5,6"
+        with self.assertRaises(Exception):
+            validLine(ticket)
         """
-        pass
-
+        #Si una línea es válida, la separa.
         
-    def test_readLine(self):
+        ticket = "C3NZsz5xBt82F4NJ,GDL,MEX,20.5218,-103.311,19.4363,-99.0721"
+        list = ["C3NZsz5xBt82F4NJ","GDL","MEX",20.5218,-103.311,19.4363,-99.0721]
+        self.assertEqual(list, validLine(ticket))
+
+
+    """
+    Prueba el procesamiento de tickets.
+    Revisa si el programa genera correctamente los diccionarios del caché y
+    los tickets.
+
+    La función readData() debe guardar los números de ticket en tickets y
+    los códigos IATA nuevos en el caché, no debe haber duplicados en caché.
+    """
+
+    def test_readData(self):
 
         """
-        Prueba el procesamiento de tickets.
-        Revisa si el programa genera correctamente los diccionarios del caché y
-        los tickets.
-
-        La función readData() debe guardar los números de ticket en tickets y
-        los códigos IATA nuevos en el caché, no debe haber duplicados en caché.
+        Preparamos tickets válidos, viendo si se agregan correctamente al leer
+        los datos y si no aparecen duplicados
         """
-
-        #self.assertEquals(cache, tickets)
-        ticket1 = "ejcwGA8AcLcWQ72g	GDL	MEX	20.5218	-103.311	19.4363	-99.0721"
-        ticket2 = "nB6WtNW8vKrWHzyC	GDL	MEX	20.5218	-103.311	19.4363	-99.0721"
+        
+        ticket1 = "ejcwGA8AcLcWQ72g,GDL,MEX,20.5218,-103.311,19.4363,-99.0721"
+        ticket2 = "nB6WtNW8vKrWHzyC,GDL,MEX,20.5218,-103.311,19.4363,-99.0721"
         data_list_test = [ticket1, ticket2]
         tickets_test = {
             "ejcwGA8AcLcWQ72g" : ["GDL", "MEX"],
             "nB6WtNW8vKrWHzyC" : ["GDL", "MEX"]
             }
+        
+        """
+        Es posible que de un request previo a llamar readData y los de readData
+        haya cambios, así que omitimos la descripción del clima y nos fijamos
+        en las llaves.
+        """
+        
         IATA_keys = ['GDL', 'MEX']
-        returnedTickets, returnedCache = readLine(data_list_test)
+        returnedCache, returnedTickets = readData(data_list_test)
         self.assertFalse(returnedTickets == None)
         self.assertFalse(returnedCache == None)
-        self.assertEquals(returnedTickets, tickets_test)
-        self.assertEquals(returnedCache.keys(), IATA_keys)
+        self.assertEqual(returnedTickets, tickets_test)
+        returnedKeys = list(returnedCache.keys())
+        self.assertEqual(returnedKeys, IATA_keys)
 
-    
 
 
 if __name__ == '__main__':
