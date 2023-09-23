@@ -52,20 +52,21 @@
 <div class="container mt-5 my-3">
     <div class="row gy-4 d-flex justify-content-between">
 
-        <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center"> 
+        <div class="col-lg-6 col-md-12"> 
           <!--TEXT-->
-          <h2 data-aos="fade-up">Your Lightning Fast Delivery Partner</h2>
-          <p data-aos="fade-up" data-aos-delay="100">Facere distinctio molestiae nisi fugit tenetur repellat non praesentium nesciunt optio quis sit odio nemo quisquam. eius quos reiciendis eum vel eum voluptatem eum maiores eaque id optio ullam occaecati odio est possimus vel reprehenderit</p>
+          <h2 data-aos="fade-up">Viaja hoy a tu destino</h2>
+          <p data-aos="fade-up" data-aos-delay="100">Descubre datos acerca de tu vuelo ingresando el número de tu boleto, el nombre la ciudad o las coordenadas en donde estas y a donde te diriges</p>
 
           <!--FORM-->
           <form action="#" class="form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
-            <input type="text" class="form-control" placeholder="IATA Code or City">
-            <button type="submit" class="btn btn-primary">Search</button>
+          <input type="text" id="ticket-input" class="form-control" placeholder="IATA Code or City Name or Coordinates (lat, lon)" />
+          <button type="button" id="search-button" class="btn btn-primary">Search</button>
           </form>
         </div>
 
+    <div class="col-lg-6 col-md-12 d-flex align-items-center justify-content-center">
         <!-- CARD-->
-    <div class="card border-0 col-md-4">
+    <div class="card border-0 w-75">
       <div class="position-relative">
         <img src="/assets/climate.jpg" alt="Imagen de fondo" class="img-fluid card-img-top" />
         <div class="card-img-overlay ">
