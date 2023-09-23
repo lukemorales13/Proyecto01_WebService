@@ -7,6 +7,7 @@ url = "https://api.openweathermap.org/data/2.5/weather?"
 coordinates = {}
 cache = {}
 tickets = {}
+cities = {}
 
 def validLine(raw_line):
     line = raw_line.rsplit(",")
@@ -80,3 +81,15 @@ def searchWeatherWith_Coordinates(lat, lon):
         data1 = res1.json()
         coordinates[f"{lat}, {lon}"] = data1["weather"][0]
         return data1["weather"][0]
+    
+def searchWeatherWith_NameOfCity(country, city):
+    location = f"{country.lower()},{city.lower()}"
+    if(location in cities):
+        return cities[location]
+    else:
+        url1 = (f"{url}q={location}{key}")
+        res1 = requests.get(url1)
+        data1 = res1.json()
+        weather = data1["weather"][0]
+        cities[location] = weather
+        return weather
