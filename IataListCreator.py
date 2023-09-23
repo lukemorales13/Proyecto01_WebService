@@ -1,10 +1,4 @@
-import csv
 import pickle
-
-data = open('dataset2.csv')
-data_location = data.readlines()
-data_location.pop(0)
-data.close
 
 location_list = []
 iata_list = []
@@ -63,25 +57,33 @@ iata_cities = {
     'ZIH':'Ixtapa/Zihuatenejo',
 }
 
-for line_string in data_location:  
-    line = line_string.strip().split(',')
-    if not line[1] in iata_list:
-        location_list.append([line[1], iata_cities[line[1]], line[3], line[4]])
-        iata_list.append(line[1])
-    if not line[2] in iata_list:
-        location_list.append([line[2], iata_cities[line[2]], line[5], line[6]])
-        iata_list.append(line[2])
-location_list.sort()
+def __read_csv(csv_file):
+    try:
+        data = open(csv_file)
+        data_location = data.readlines()
+        data_location.pop(0)
+        data.close
+        return data_location
+    except FileNotFoundError:
+        print("File ", {csv_file}, " not found!")
+        exit()
 
+def __create_location_list(data_location):
+    for line_string in data_location:  
+        line = line_string.strip().split(',')
+        if not line[1] in iata_list:
+            location_list.append([line[1], iata_cities[line[1]], line[3], line[4]])
+            iata_list.append(line[1])
+        if not line[2] in iata_list:
+            location_list.append([line[2], iata_cities[line[2]], line[5], line[6]])
+            iata_list.append(line[2])
+    location_list.sort()
+    return location_list
 
-########## ELIMINAR ##########
-def create_csv():
-    with open('data_location1.csv', 'w',  encoding='utf-8-sig', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerows(location_list)
+def create_iata_file(pklfile):
+    data_location = __read_csv('dataset2.csv')
+    location_list = __create_location_list(data_location)
 
-
-def create_pkl(pklfile, location_list):
     print("####### Creating file '", pklfile, "' #######")
     print()
 
@@ -90,8 +92,6 @@ def create_pkl(pklfile, location_list):
         
     print("####### File '", pklfile, "' created #######")
     print()  
-
-create_pkl('iata_list.pkl', location_list)
 
 
 

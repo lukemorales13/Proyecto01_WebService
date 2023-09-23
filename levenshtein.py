@@ -2,6 +2,8 @@ import numpy
 import pickle
 import re
 import unidecode
+from CityDictionaryCreator import create_cities_file
+from IataListCreator import create_iata_file
 
 """
 Regresa la distancia entre dos palabras obtenida por el 
@@ -55,13 +57,9 @@ def __normalize_word(name):
         return name
 
 def __import_pkl(pkl_file):
-    try:
-        with open(pkl_file, 'rb') as file_in:
-            location_data = pickle.load(file_in)
-        return location_data
-    except FileNotFoundError:
-        
-        return
+    with open(pkl_file, 'rb') as file_in:
+        location_data = pickle.load(file_in)
+    return location_data
 
 def __get_location(word, type, location_data):
     for location in location_data:
@@ -104,7 +102,13 @@ def __closest_words_short(num_words, level, max_distance, dict_distance, closest
     return closest_locations
 
 def __short_search(word, num_words, max_distance, type):
-    iata_list = __import_pkl('iata_list.pkl')
+    file = 'iata_list.pkl'
+    iata_list = []
+    try:
+        iata_list = __import_pkl(file)
+    except FileNotFoundError:
+        create_iata_file(file)
+        iata_list = __import_pkl(file)
     exact_location = __get_location(word, type, iata_list)
     if(exact_location == []):
         dict_distance = __calculate_distance(word, max_distance, type, iata_list)
@@ -130,9 +134,16 @@ for Word Autocompletion and Autocorrection. Paperspace Blog.
 https://blog.paperspace.com/implementing-levenshtein-distance-word-autocomplete-autocorrect/
 """
 def massive_search(word):
+    file = 'all_cities.pkl'
     num_words = 10
     max_distance = 3
-    cities_dictionary = __import_pkl('ciudades.pkl')
+    cities_dictionary = {}
+    try:
+        cities_dictionary = __import_pkl(file)
+    except FileNotFoundError:
+        create_cities_file(file)
+        cities_dictionary = __import_pkl(file)
+        
     dict_distance = {}
     for location in cities_dictionary:
         location_distance = int(levenshtein_distance(word, location))
@@ -160,18 +171,3 @@ def __closest_words_massive(num_words, level, max_distance, dict_distance, close
                     return closest_locations
         return __closest_words_massive(num_words, level+1, max_distance, dict_distance, closest_locations)
     return closest_locations
-
-
-####### PRUEBAS #######
-
-location = "Taglag"
-print()
-print('MASSIVE ##########')
-print(massive_search(location))
-print()
-print('IATA ##########')
-print("iata search: ", iata_search('mty'))
-print()
-print('CITY ##########')
-print("city search: ", city_search(location))
-print()

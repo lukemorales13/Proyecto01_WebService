@@ -1,22 +1,23 @@
 import json
 import pickle
-import re
-import unidecode
 
+def __create_list(jsonfile):
+    try:
+        print()
+        print("####### Transfering '", jsonfile, "' to list #######")
+        print()
 
-def create_list(jsonfile):
-    print()
-    print("####### Transfering '", jsonfile, "' to list #######")
-    print()
+        with open(jsonfile, 'r', encoding='utf-8-sig') as file_contents:
+            parsed_json = json.loads(file_contents.read())
 
-    with open(jsonfile, 'r', encoding='utf-8-sig') as file_contents:
-        parsed_json = json.loads(file_contents.read())
+        print("####### Transference to list completed #######")
+        print()
+        return parsed_json
+    except FileNotFoundError:
+        print("File ", {jsonfile}, " not found!")
+        exit()
 
-    print("####### Transference to list completed #######")
-    print()
-    return parsed_json
-
-def create_dictionary(parsed_json):
+def __create_dictionary(parsed_json):
     print('####### Creating dictionary #######')
     print()    
 
@@ -32,7 +33,11 @@ def create_dictionary(parsed_json):
     print()
     return cities_dictionary
 
-def create_file(pklfile, cities_dictionary):
+def create_cities_file(pklfile):
+    
+    parsed_json = __create_list('json/city.list.json')
+    cities_dictionary = __create_dictionary(parsed_json)
+
     print("####### Creating file '", pklfile, "' #######")
     print()    
 
@@ -41,9 +46,4 @@ def create_file(pklfile, cities_dictionary):
         
     print("####### File '", pklfile, "' created #######")
     print()    
-
-
-parsed_json = create_list('json/city.list.json')
-cities_dictionary = create_dictionary(parsed_json)
-create_file('ciudades.pkl', cities_dictionary)
  
