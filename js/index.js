@@ -1,3 +1,9 @@
+// Preloader
+const preloaderWrapped = document.querySelector('.preloader-wrapper');
+window.addEventListener('load', function () {
+    preloaderWrapped.classList.add('fade-out-animation');
+});
+
 // Función para hacer la solicitud al servidor Python y mostrar los datos en la tarjeta (card)
 function updateWeatherCard(data) {
   const temperatureSpan = document.getElementById("temperature");
