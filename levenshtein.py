@@ -1,10 +1,17 @@
-# https://blog.paperspace.com/implementing-levenshtein-distance-word-autocomplete-autocorrect/
-
 import numpy
 import pickle
 import re
 import unidecode
 
+"""
+Regresa la distancia entre dos palabras obtenida por el 
+algoritmo de Levenshtein. 
+
+Código obtenido de:
+Gad, A. F. (2021). Implementing The Levenshtein Distance 
+for Word Autocompletion and Autocorrection. Paperspace Blog. 
+https://blog.paperspace.com/implementing-levenshtein-distance-word-autocomplete-autocorrect/
+"""
 def levenshtein_distance(token1, token2):
     
     token1 = __normalize_word(token1)
@@ -48,10 +55,14 @@ def __normalize_word(name):
         return name
 
 def __import_pkl(pkl_file):
-    with open(pkl_file, 'rb') as file_in:
-        location_data = pickle.load(file_in)
-    return location_data
-    
+    try:
+        with open(pkl_file, 'rb') as file_in:
+            location_data = pickle.load(file_in)
+        return location_data
+    except FileNotFoundError:
+        
+        return
+
 def __get_location(word, type, location_data):
     for location in location_data:
         location_distance = int(levenshtein_distance(word, location[type]))
@@ -59,7 +70,18 @@ def __get_location(word, type, location_data):
             return [location]
     return []
 
-def __calculate_distance(word, num_words, max_distance, type, location_data):
+"""
+Calcula las distancias de Levenshtein entre la palabra 
+escogida y cada palabra de la lista de las palabras a comparar.
+Regresa un diccionario con subdiccionarios, donde cada uno 
+tiene palabras con la misma distancias resspecto a la pedida.
+
+Código basado en:
+Gad, A. F. (2021). Implementing The Levenshtein Distance 
+for Word Autocompletion and Autocorrection. Paperspace Blog. 
+https://blog.paperspace.com/implementing-levenshtein-distance-word-autocomplete-autocorrect/
+"""
+def __calculate_distance(word, max_distance, type, location_data):
     dict_distance = {}
     for location in location_data:
         location_distance = int(levenshtein_distance(word, location[type]))
@@ -67,7 +89,7 @@ def __calculate_distance(word, num_words, max_distance, type, location_data):
             if not location_distance in dict_distance:
                 dict_distance[location_distance] = []
             dict_distance[location_distance].append(location)
-    return __closest_words_short(num_words, 1, max_distance, dict_distance, [])
+    return dict_distance
         
 def __closest_words_short(num_words, level, max_distance, dict_distance, closest_locations):
     if(level <= max_distance):
@@ -85,7 +107,8 @@ def __short_search(word, num_words, max_distance, type):
     iata_list = __import_pkl('iata_list.pkl')
     exact_location = __get_location(word, type, iata_list)
     if(exact_location == []):
-        return __calculate_distance(word, num_words, max_distance, type, iata_list)
+        dict_distance = __calculate_distance(word, max_distance, type, iata_list)
+        return __closest_words_short(num_words, 1, max_distance, dict_distance, [])
     else:
         return exact_location
 
@@ -95,6 +118,17 @@ def iata_search(word):
 def city_search(word):
     return __short_search(word, 5, 3, 1)
 
+"""
+Calcula las distancias de Levenshtein entre la palabra 
+escogida y cada palabra de la lista de las palabras a 
+comparar, luego guarda las palabras con la distancia menor. 
+Regresa una lista con las palabras más cercanas a la pedida.
+
+Código basado en:
+Gad, A. F. (2021). Implementing The Levenshtein Distance 
+for Word Autocompletion and Autocorrection. Paperspace Blog. 
+https://blog.paperspace.com/implementing-levenshtein-distance-word-autocomplete-autocorrect/
+"""
 def massive_search(word):
     num_words = 10
     max_distance = 3
