@@ -11,6 +11,12 @@ function updateWeatherCard(data) {
 
   temperatureSpan.textContent = data.weather1.main.temp + "°C";
   descriptionSpan.textContent = data.weather1.weather[0].description;
+
+  if (data.weather2) {
+    // Si hay datos para la segunda ciudad, mostrarlos
+    temperatureSpan.textContent += " / " + data.weather2.main.temp + "°C";
+    descriptionSpan.textContent += " / " + data.weather2.weather[0].description;
+  }
 }
 
 // Llama a la API para obtener los datos meteorológicos cuando se hace clic en el botón
