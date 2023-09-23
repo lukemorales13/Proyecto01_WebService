@@ -3,8 +3,14 @@ import requests
 import sys
 import time
 
+import methods
+from methods import cache
+from methods import tickets
+from methods import coordinates
 from methods import validLine
 from methods import readData
+from methods import searchWeatherWith_IATA
+from methods import searchWeatherWith_ticket
 
 
 class TestModel(unittest.TestCase):
@@ -84,6 +90,46 @@ class TestModel(unittest.TestCase):
         returnedKeys = list(returnedCache.keys())
         self.assertEqual(returnedKeys, IATA_keys)
 
+    """
+    Corrobora que el resultado de buscar por IATA en el caché sea el adecuado
+    tanto si está o no está el código guardado.
+    """
+
+    def test_searchWeatherWith_IATA(self):
+
+        methods.cache = {}
+        iata = "MEX"
+        self.assertEqual(searchWeatherWith_IATA(iata), "O.o")
+        ticket1 = "ejcwGA8AcLcWQ72g,GDL,MEX,20.5218,-103.311,19.4363,-99.0721"
+        ticketList = [ticket1]
+        methods.cache, ticketDict = readData(ticketList)
+        self.assertEqual(searchWeatherWith_IATA(iata), methods.cache[iata])
+
+    """
+    Corrobora que el resultado de buscar por número de ticket en el diccionario
+    sea el adecuado tanto si está o no está el código guardado.
+    """
+
+    def test_searchWeatherWith_ticket(self):
+        
+        ticket1 = "ejcwGA8AcLcWQ72g,GDL,MEX,20.5218,-103.311,19.4363,-99.0721"
+        num1 = "ejcwGA8AcLcWQ72g"
+        methods.cache = {}
+        methods.tickets = {}
+        err = "Ticket not found.\nPlease check again the information."
+        self.assertEqual(searchWeatherWith_ticket(num1), err)        
+        ticketList = [ticket1]
+        methods.cache, methods.tickets = readData(ticketList)
+        self.assertFalse(searchWeatherWith_ticket(num1) == err)
+
+    def searchWeatherWith_Coordinates(self):
+
+        methods.coordinates = {}
+        ticket1 = "ejcwGA8AcLcWQ72g,GDL,MEX,20.5218,-103.311,19.4363,-99.0721"
+        ticketList = [ticket1]
+        testCache, testTickets = readData(ticketList)
+        weather = testCache['GDL']
+        assertEquals(searchWeatherWith_Coordinates(20.5218,-103.311), weather)
 
 
 if __name__ == '__main__':

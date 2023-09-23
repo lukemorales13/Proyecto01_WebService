@@ -5,6 +5,8 @@ import requests
 key = "&appid=155505a47faf9082a7ee3d45f7b1ea0b&units=metric"
 url = "https://api.openweathermap.org/data/2.5/weather?"
 coordinates = {}
+cache = {}
+tickets = {}
 
 def validLine(raw_line):
     line = raw_line.rsplit(",")
