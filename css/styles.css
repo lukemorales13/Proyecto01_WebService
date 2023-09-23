@@ -25,7 +25,7 @@ body {
     background-size: cover; 
     background-repeat: no-repeat; 
     background-attachment: fixed; 
-    background-color: rgba(255, 255, 255, 0.5); /* Color de fondo semi transparente (blanco en este caso) */
+    background-color: rgba(255, 255, 255, 0.5); 
 }
 
 .centered  {
@@ -46,8 +46,8 @@ body {
 
 /* Estilo de fuente para la barra de navegación */
 .navbar a {
-    font-family: Arial, sans-serif; /* Cambia la fuente según tus preferencias */
-    font-size: 24px; /* Tamaño de fuente mediano */
+    font-family: Arial, sans-serif; 
+    font-size: 24px; 
     font-weight: bold;
     margin-left: 25px;
 }
