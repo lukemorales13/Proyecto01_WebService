@@ -2,14 +2,22 @@ import sys
 import time
 import requests
 
-key = "&appid=155505a47faf9082a7ee3d45f7b1ea0b&units=metric"
+key = "&appid=155505a47faf9082a7ee3d45f7b1ea0b&units=metric" #key of the API
 url = "https://api.openweathermap.org/data/2.5/weather?"
-coordinates = {}
-cache = {}
-tickets = {}
-cities = {}
+coordinates = {} #Dictionary "lat, lon": weather
+cache = {} #Dictionary "IATA" : weather
+tickets = {} #Dictionary "ticket": [IATA1, IATA2]
+cities = {} #Dictionary "country,city" : weather
 
 def validLine(raw_line):
+    """Method to check if a line in the dataset is valid. 
+
+    Args:
+        raw_line (string): the line as a string
+
+    Returns:
+        list: a list of the elements of the line
+    """
     line = raw_line.rsplit(",")
     if len(line[0])!=16:
         print(f"\nTicket {line[0]} is not valid, must have exactly 16 characters.")
@@ -23,19 +31,27 @@ def validLine(raw_line):
     return line
 
 def readData(data_list):
+    """Method to read the data from the data_list
+
+    Args:
+        data_list (list): A list with the data of the dataset.
+
+    Returns:
+        dict,dict: Cache, with the weather of each IATA code. And tickets, with the IATA code of origin and destination.
+    """
     cache = {}
     tickets = {}
     for raw_line in data_list:
-        line = validLine(raw_line)
+        line = validLine(raw_line) #check if the line is valid
         tickets[line[0]] = [line[1], line[2]]
         
         if not line[1] in cache:
             try:
-                url1 = (f"{url}lat={line[3]}&lon={line[4]}{key}")
-                res1 = requests.get(url1)
-                data1 = res1.json()
-                cache[line[1]] = data1["weather"][0]
-                coordinates[f"{line[3]}, {line[4]}"] = data1["weather"][0]
+                url1 = (f"{url}lat={line[3]}&lon={line[4]}{key}") #create the url
+                res1 = requests.get(url1) #makes the API call
+                data1 = res1.json() #define the format
+                cache[line[1]] = data1["weather"][0] #save the weather information that we want in the cache
+                coordinates[f"{line[3]}, {line[4]}"] = data1["weather"][0] #save the weather information that we want associated with its coordinates
                 time.sleep(1.5)
             except:
                 print(f"\nCould't request the weather information. The input {line} is probably incorrect.")
@@ -56,6 +72,14 @@ def readData(data_list):
     return cache, tickets
     
 def searchWeatherWith_ticket(ticket):
+    """method to search the weather of the cities included in an airplane ticket
+
+    Args:
+        ticket (string): ticket we want to search
+
+    Returns:
+        string: weather of the cities included in the ticket
+    """
     if(ticket in tickets):
         IATAS = tickets[ticket]
         weather1 = cache[IATAS[0]]
@@ -67,12 +91,29 @@ def searchWeatherWith_ticket(ticket):
         return ("Ticket not found.\nPlease check again the information.")
 
 def searchWeatherWith_IATA(IATA):
+    """method to search the weather of a city from a IATA code
+
+    Args:
+        IATA (string): IATA code
+
+    Returns:
+        string: The weather
+    """
     if(IATA in cache):
         return cache[IATA]
     else:
-        return "O.o"
+        return "There are no results"
         
 def searchWeatherWith_Coordinates(lat, lon):
+    """method to search the weather of a city with its coordinates
+
+    Args:
+        lat (string): latitude of the city
+        lon (string): longitude of the city
+
+    Returns:
+        string: the weather
+    """
     if((f"{lat}, {lon}") in coordinates):
         return coordinates[f"{lat}, {lon}"]
     else:
@@ -83,6 +124,15 @@ def searchWeatherWith_Coordinates(lat, lon):
         return data1["weather"][0]
     
 def searchWeatherWith_NameOfCity(country, city):
+    """method to search the weather of a city with the name of the city and country
+
+    Args:
+        country (string): name of the city's country
+        city (string): name of the city
+
+    Returns:
+        string: the weather
+    """
     location = f"{country.lower()},{city.lower()}"
     if(location in cities):
         return cities[location]
