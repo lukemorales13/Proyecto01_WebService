@@ -44,6 +44,12 @@ function getWeatherForTicket() {
       });
 }
 
-// Asociar la función getWeatherForTicket al evento clic del botón de búsqueda
-const searchButton = document.getElementById("search-button");
-searchButton.addEventListener("click", getWeatherForTicket);
+searchButton.addEventListener("click", function () {
+  const inputValue = document.getElementById("search-input").value.trim();
+
+  if (inputValue === "") {
+    alert("Por favor, ingresa un número de boleto o una ciudad válida.");
+    return;
+  }
+  
+}); 

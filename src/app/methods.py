@@ -154,7 +154,7 @@ def searchWeatherWith_NameOfCity(country, city):
 # Ruta para el formulario HTML
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('src/app/static/templates/html/index.html')
 
 # Ruta para obtener datos meteorológicos
 @app.route('/get_weather', methods=['GET'])
