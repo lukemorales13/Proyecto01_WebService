@@ -57,7 +57,7 @@ iata_cities = {
     'ZIH':'Ixtapa/Zihuatenejo',
 }
 
-def __read_csv(csv_file):
+def read_csv(csv_file):
     try:
         data = open(csv_file)
         data_location = data.readlines()
@@ -65,10 +65,10 @@ def __read_csv(csv_file):
         data.close
         return data_location
     except FileNotFoundError:
-        print("File ", {csv_file}, " not found!")
+        print("File ", csv_file, " not found!")
         exit()
 
-def __create_location_list(data_location):
+def create_location_list(data_location):
     for line_string in data_location:  
         line = line_string.strip().split(',')
         if not line[1] in iata_list:
@@ -81,8 +81,8 @@ def __create_location_list(data_location):
     return location_list
 
 def create_iata_file(pklfile):
-    data_location = __read_csv('dataset2.csv')
-    location_list = __create_location_list(data_location)
+    data_location = read_csv('src/models/dataset2.csv')
+    location_list = create_location_list(data_location)
 
     print("####### Creating file '", pklfile, "' #######")
     print()
@@ -92,6 +92,7 @@ def create_iata_file(pklfile):
         
     print("####### File '", pklfile, "' created #######")
     print()  
+
 
 
 

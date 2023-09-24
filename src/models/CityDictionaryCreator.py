@@ -14,7 +14,7 @@ def __create_list(jsonfile):
         print()
         return parsed_json
     except FileNotFoundError:
-        print("File ", {jsonfile}, " not found!")
+        print("File ", jsonfile, " not found!")
         exit()
 
 def __create_dictionary(parsed_json):
@@ -35,7 +35,7 @@ def __create_dictionary(parsed_json):
 
 def create_cities_file(pklfile):
     
-    parsed_json = __create_list('json/city.list.json')
+    parsed_json = __create_list('src/app/static/json/city.list.json')
     cities_dictionary = __create_dictionary(parsed_json)
 
     print("####### Creating file '", pklfile, "' #######")

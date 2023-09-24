@@ -102,7 +102,7 @@ def closest_words_short(num_words, level, max_distance, dict_distance, closest_l
     return closest_locations
 
 def short_search(word, num_words, max_distance, type):
-    file = 'iata_list.pkl'
+    file = 'src/models/iata_list.pkl'
     iata_list = []
     try:
         iata_list = import_pkl(file)
@@ -134,7 +134,7 @@ for Word Autocompletion and Autocorrection. Paperspace Blog.
 https://blog.paperspace.com/implementing-levenshtein-distance-word-autocomplete-autocorrect/
 """
 def massive_search(word):
-    file = 'all_cities.pkl'
+    file = 'src/models/all_cities.pkl'
     num_words = 10
     max_distance = 3
     cities_dictionary = {}
