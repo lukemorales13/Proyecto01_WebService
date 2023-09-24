@@ -25,27 +25,8 @@ class TestModel(unittest.TestCase):
         
         """
         Si la línea no es válida, debería saltar a la línea siguiente y no
-        regresar nada.
-        Aún debo decidir si evaluar que no pase nada o evaluar que arroje
-        una excepción, por lo mismo. Por el momento, dejo las pruebas sucias
-        de esta función comentadas.
+        regresar nada. Si una línea es válida, la separa.
         """
-
-        """
-        ticket = ""
-        with self.assertRaises(Exception):
-            validLine(ticket)
-        ticket = "a"
-        with self.assertRaises(Exception):
-            validLine(ticket)
-        ticket = "aaaaaaaaaaaaaaaa,bbb,ccc,d,e,f,g"
-        with self.assertRaises(Exception):
-            validLine(ticket)
-        ticket = "aaaaaaaaaaaaaaaa,1,2,3,4,5,6"
-        with self.assertRaises(Exception):
-            validLine(ticket)
-        """
-        #Si una línea es válida, la separa.
         
         ticket = "C3NZsz5xBt82F4NJ,GDL,MEX,20.5218,-103.311,19.4363,-99.0721"
         list = ["C3NZsz5xBt82F4NJ","GDL","MEX",20.5218,-103.311,19.4363,-99.0721]
