@@ -9,27 +9,13 @@ function updateWeatherCard(data) {
   const temperatureSpan = document.getElementById("temperature");
   const descriptionSpan = document.getElementById("description");
 
-  temperatureSpan.textContent = data.weather1.main.temp + "°C";
-  descriptionSpan.textContent = data.weather1.weather[0].description;
-
-  if (data.weather2) {
-    // Si hay datos para la segunda ciudad, mostrarlos
-    temperatureSpan.textContent += " / " + data.weather2.main.temp + "°C";
-    descriptionSpan.textContent += " / " + data.weather2.weather[0].description;
-  }
+  temperatureSpan.textContent = data.temperature + "°C";
+  descriptionSpan.textContent = data.description;
 }
 
 // Llama a la API para obtener los datos meteorológicos cuando se hace clic en el botón
-function getWeatherForTicket() {
-  const ticketInput = document.getElementById("ticket-input");
-  const ticketNumber = ticketInput.value.trim();
-
-  if (ticketNumber === "") {
-      alert("Por favor, ingresa un número de boleto válido.");
-      return;
-  }
-
-  fetch(`/get_weather?ticket=${ticketNumber}`)
+function getWeatherData(inputValue) {
+  fetch(`/get_weather?input=${inputValue}`)
       .then(response => {
           if (!response.ok) {
               throw new Error(`Error de red: ${response.status}`);
@@ -44,6 +30,16 @@ function getWeatherForTicket() {
       });
 }
 
-// Asociar la función getWeatherForTicket al evento clic del botón de búsqueda
+// Asociar la función getWeatherData al evento clic del botón de búsqueda
 const searchButton = document.getElementById("search-button");
-searchButton.addEventListener("click", getWeatherForTicket);
+searchButton.addEventListener("click", function () {
+  const inputElement = document.getElementById("ticket-input");
+  const inputValue = inputElement.value.trim();
+
+  if (inputValue === "") {
+    alert("Por favor, ingresa un número de boleto o una ciudad válida.");
+    return;
+  }
+
+  getWeatherData(inputValue);
+});
