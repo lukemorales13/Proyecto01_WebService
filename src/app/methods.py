@@ -1,6 +1,11 @@
+from flask import Flask, request, jsonify, render_template
+from levenshtein import iata_search, city_search, massive_search
+
 import sys
 import time
 import requests
+
+app = Flask(__name__)
 
 key = "&appid=155505a47faf9082a7ee3d45f7b1ea0b&units=metric" #key of the API
 url = "https://api.openweathermap.org/data/2.5/weather?"
@@ -143,3 +148,36 @@ def searchWeatherWith_NameOfCity(country, city):
         weather = data1["weather"][0]
         cities[location] = weather
         return weather
+
+# Tu código de funciones y procesamiento de datos aquí (como validLine, readData, etc.)
+
+# Ruta para el formulario HTML
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# Ruta para obtener datos meteorológicos
+@app.route('/get_weather', methods=['GET'])
+def get_weather():
+    search_term = request.args.get('search')
+
+    # Intenta buscar por IATA code
+    iata_results = iata_search(search_term)
+    if iata_results:
+        return jsonify({'weather1': iata_results[0]})
+
+    # Si no se encontraron resultados por IATA code, buscar por nombre de ciudad
+    city_results = city_search(search_term)
+    if city_results:
+        return jsonify({'weather1': city_results[0]})
+
+    # Si no se encontraron resultados por nombre de ciudad, realizar una búsqueda masiva
+    massive_results = massive_search(search_term)
+    if massive_results:
+        return jsonify({'weather1': massive_results[0]})
+
+    # Si no se encontraron resultados, devolver un mensaje de error
+    return jsonify({'error': 'No se encontraron datos para la búsqueda.'}), 404
+
+if __name__ == '__main__':
+    app.run(debug=True)

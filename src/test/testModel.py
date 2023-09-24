@@ -3,14 +3,14 @@ import requests
 import sys
 import time
 
-import methods
-from methods import cache
-from methods import tickets
-from methods import coordinates
-from methods import validLine
-from methods import readData
-from methods import searchWeatherWith_IATA
-from methods import searchWeatherWith_ticket
+import src.app.methods as methods
+from src.app.methods import cache
+from src.app.methods import tickets
+from src.app.methods import coordinates
+from src.app.methods import validLine
+from src.app.methods import readData
+from src.app.methods import searchWeatherWith_IATA
+from src.app.methods import searchWeatherWith_ticket
 
 
 class TestModel(unittest.TestCase):
