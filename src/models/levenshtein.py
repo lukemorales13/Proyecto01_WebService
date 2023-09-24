@@ -16,8 +16,8 @@ https://blog.paperspace.com/implementing-levenshtein-distance-word-autocomplete-
 """
 def levenshtein_distance(token1, token2):
     
-    token1 = __normalize_word(token1)
-    token2 = __normalize_word(token2)
+    token1 = normalize_word(token1)
+    token2 = normalize_word(token2)
     distances = numpy.zeros((len(token1) + 1, len(token2) + 1))
 
     for t1 in range(len(token1) + 1):
@@ -47,7 +47,7 @@ def levenshtein_distance(token1, token2):
 
     return distances[len(token1)][len(token2)]
 
-def __normalize_word(name):
+def normalize_word(name):
     new_name = unidecode.unidecode(name)
     new_name = re.sub("[^A-Z]", "", name, 0,re.IGNORECASE)
     new_name = new_name.upper()
@@ -56,12 +56,12 @@ def __normalize_word(name):
     else:
         return name
 
-def __import_pkl(pkl_file):
+def import_pkl(pkl_file):
     with open(pkl_file, 'rb') as file_in:
         location_data = pickle.load(file_in)
     return location_data
 
-def __get_location(word, type, location_data):
+def get_location(word, type, location_data):
     for location in location_data:
         location_distance = int(levenshtein_distance(word, location[type]))
         if (location_distance == 0):
@@ -79,7 +79,7 @@ Gad, A. F. (2021). Implementing The Levenshtein Distance
 for Word Autocompletion and Autocorrection. Paperspace Blog. 
 https://blog.paperspace.com/implementing-levenshtein-distance-word-autocomplete-autocorrect/
 """
-def __calculate_distance(word, max_distance, type, location_data):
+def calculate_distance(word, max_distance, type, location_data):
     dict_distance = {}
     for location in location_data:
         location_distance = int(levenshtein_distance(word, location[type]))
@@ -89,7 +89,7 @@ def __calculate_distance(word, max_distance, type, location_data):
             dict_distance[location_distance].append(location)
     return dict_distance
         
-def __closest_words_short(num_words, level, max_distance, dict_distance, closest_locations):
+def closest_words_short(num_words, level, max_distance, dict_distance, closest_locations):
     if(level <= max_distance):
         if level in dict_distance:
             dict_distance[level].sort()
@@ -98,29 +98,29 @@ def __closest_words_short(num_words, level, max_distance, dict_distance, closest
                 num_words = num_words - 1
                 if (num_words == 0):
                     return closest_locations
-        return __closest_words_short(num_words, level+1, max_distance, dict_distance, closest_locations)
+        return closest_words_short(num_words, level+1, max_distance, dict_distance, closest_locations)
     return closest_locations
 
-def __short_search(word, num_words, max_distance, type):
+def short_search(word, num_words, max_distance, type):
     file = 'iata_list.pkl'
     iata_list = []
     try:
-        iata_list = __import_pkl(file)
+        iata_list = import_pkl(file)
     except FileNotFoundError:
         create_iata_file(file)
-        iata_list = __import_pkl(file)
-    exact_location = __get_location(word, type, iata_list)
+        iata_list = import_pkl(file)
+    exact_location = get_location(word, type, iata_list)
     if(exact_location == []):
-        dict_distance = __calculate_distance(word, max_distance, type, iata_list)
-        return __closest_words_short(num_words, 1, max_distance, dict_distance, [])
+        dict_distance = calculate_distance(word, max_distance, type, iata_list)
+        return closest_words_short(num_words, 1, max_distance, dict_distance, [])
     else:
         return exact_location
 
 def iata_search(word):
-    return __short_search(word, 5, 1, 0)
+    return short_search(word, 5, 1, 0)
 
 def city_search(word):
-    return __short_search(word, 5, 3, 1)
+    return short_search(word, 5, 3, 1)
 
 """
 Calcula las distancias de Levenshtein entre la palabra 
@@ -139,10 +139,10 @@ def massive_search(word):
     max_distance = 3
     cities_dictionary = {}
     try:
-        cities_dictionary = __import_pkl(file)
+        cities_dictionary = import_pkl(file)
     except FileNotFoundError:
         create_cities_file(file)
-        cities_dictionary = __import_pkl(file)
+        cities_dictionary = import_pkl(file)
         
     dict_distance = {}
     for location in cities_dictionary:
@@ -158,9 +158,9 @@ def massive_search(word):
             if not location_distance in dict_distance:
                 dict_distance[location_distance] = {}
             dict_distance[location_distance][location] = cities_dictionary[location]
-    return __closest_words_massive(num_words, 1, max_distance, dict_distance, [])
+    return closest_words_massive(num_words, 1, max_distance, dict_distance, [])
 
-def __closest_words_massive(num_words, level, max_distance, dict_distance, closest_locations):
+def closest_words_massive(num_words, level, max_distance, dict_distance, closest_locations):
     if(level <= max_distance):
         if level in dict_distance:
             for location in dict_distance[level]:
@@ -169,5 +169,5 @@ def __closest_words_massive(num_words, level, max_distance, dict_distance, close
                     num_words = num_words - 1
                 if (num_words == 0):
                     return closest_locations
-        return __closest_words_massive(num_words, level+1, max_distance, dict_distance, closest_locations)
+        return closest_words_massive(num_words, level+1, max_distance, dict_distance, closest_locations)
     return closest_locations
