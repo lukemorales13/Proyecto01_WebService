@@ -36,7 +36,7 @@ def validLine(raw_line):
     return line
 
 def readData(data_list):
-    """Method to read the data from the data_list
+    """Method to read the data from the data_list and to create the cache
 
     Args:
         data_list (list): A list with the data of the dataset.
@@ -53,11 +53,10 @@ def readData(data_list):
         if not line[1] in cache:
             try:
                 url1 = (f"{url}lat={line[3]}&lon={line[4]}{key}") #create the url
-                res1 = requests.get(url1) #makes the API call
-                data1 = res1.json() #define the format
-                cache[line[1]] = data1["weather"][0] #save the weather information that we want in the cache
-                coordinates[f"{line[3]}, {line[4]}"] = data1["weather"][0] #save the weather information that we want associated with its coordinates
-                time.sleep(1.5)
+                weather = get_weather(url1)
+                cache[line[1]] = weather
+                coordinates[f"{line[3]}, {line[4]}"] = weather 
+                time.sleep(1.3)
             except:
                 print(f"\nCould't request the weather information. The input {line} is probably incorrect.")
                 sys.exit()
@@ -65,11 +64,10 @@ def readData(data_list):
         if not line[2] in cache:
             try:
                 url2 = (f"{url}lat={line[5]}&lon={line[6]}{key}")
-                res2 = requests.get(url2)
-                data2 = res2.json()
-                cache[line[2]] = data2["weather"][0]
-                coordinates[f"{line[5]}, {line[6]}"] = data1["weather"][0]
-                time.sleep(1.5)
+                weather = get_weather(url2)
+                cache[line[2]] = weather
+                coordinates[f"{line[5]}, {line[6]}"] = weather
+                time.sleep(1.3)
             except:
                 print(f"\nCould't request the weather information. The input {line} is probably incorrect.")
                 sys.exit()
@@ -99,7 +97,7 @@ def searchWeatherWith_IATA(IATA):
     """method to search the weather of a city from a IATA code
 
     Args:
-        IATA (string): IATA code
+        IATA (string): IATA code.
 
     Returns:
         string: The weather
@@ -123,10 +121,9 @@ def searchWeatherWith_Coordinates(lat, lon):
         return coordinates[f"{lat}, {lon}"]
     else:
         url1 = (f"{url}lat={lat}&lon={lon}{key}")
-        res1 = requests.get(url1)
-        data1 = res1.json()
-        coordinates[f"{lat}, {lon}"] = data1["weather"][0]
-        return data1["weather"][0]
+        weather = get_weather(url1)
+        coordinates[f"{lat}, {lon}"] = weather
+        return weather
     
 def searchWeatherWith_NameOfCity(country, city):
     """method to search the weather of a city with the name of the city and country
@@ -143,11 +140,15 @@ def searchWeatherWith_NameOfCity(country, city):
         return cities[location]
     else:
         url1 = (f"{url}q={location}{key}")
-        res1 = requests.get(url1)
-        data1 = res1.json()
-        weather = data1["weather"][0]
+        weather = get_weather(url1)
         cities[location] = weather
         return weather
+
+def get_weather(url1):
+    res1 = requests.get(url1) 
+    data1 = res1.json()
+    return (f"\nCountry: {data1['sys']['country']}\nName: {data1['name']}"+
+        f"\nWeather: {data1['weather'][0]['main']}, {data1['weather'][0]['description']}.\nTemperature: {data1['main']['temp']} degrees celcius.\nHumidity: {data1['main']['humidity']}%.")
 
 # Tu código de funciones y procesamiento de datos aquí (como validLine, readData, etc.)
 
