@@ -93,6 +93,9 @@ body {
 .ini form .button-img{
     width: 16px;
 }
+.col-lg-6 {
+    align-items: center;
+}
 
 /* CARD */
 /* Estilos para la tarjeta */
