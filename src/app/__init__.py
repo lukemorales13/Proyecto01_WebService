@@ -1,6 +1,8 @@
 
 from flask import Flask, jsonify
-from flask import request #para metodos https
+from flask import request
+
+from levenshtein import city_search, iata_search, massive_search #para metodos https
 #-------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------
 app = Flask(__name__)
