@@ -2,14 +2,14 @@
 from flask import Flask, jsonify
 from flask import request
 
-from levenshtein import city_search, iata_search, massive_search #para metodos https
+from app.levenshtein import city_search, iata_search, massive_search #para metodos https
 #-------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------
 app = Flask(__name__)
 
 ###----------------------------------------------------------------------inicio de rutas------------------------------------------------------------------------------------###
 # Ruta para obtener datos meteorológicos
-@app.route('/get_weather', methods=['GET'])
+@app.route('/', methods=['GET'])
 def get_weather():
     search_term = request.args.get('search')
 
@@ -37,6 +37,7 @@ def main():
     app.run(host='0.0.0.0',port=5001,debug=False,)
         
 if __name__ == '__main__':
-    main()
+    app.debug = True
+    app.run()
 
 
