@@ -59,9 +59,12 @@
 
           <!--FORM-->
           <form action="#" class="form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
-          <input type="text" id="iata-input" class="form-control" placeholder="IATA Code or City Name or Coordinates (lat, lon)" />
-          <button type="button" id="iata-search-button" class="btn btn-primary">Search</button>
+          <input type="text" id="iata-input" spell class="form-control" placeholder="Ingresa coordenadas (lat,lon) o el nombre de tu ciudad" />
+          <button class="button"><img src="/src/app/static/assets/search.svg"></button>
           </form>
+
+
+          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d30294315.62239088!2d-124.33379243073935!3d22.048196358906875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2smx!4v1695615543730!5m2!1ses!2smx" width="500" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
 
     <div class="col-lg-6 col-md-12 d-flex align-items-center justify-content-center">
@@ -85,8 +88,27 @@
             </script>
           </div>
         </h6>
-        <p class="card-text mt-4">Temperatura: <span id="temperature"></span>°C</p>
-        <p class="card-text mt-4">Descripción: <span id="description"></span></p>
+        <div class="card-weather">
+          <img src="/src/app/static/assets/rain.svg" class="weather-icon">
+          <h7 class="card-text">22 °C</h7>
+          <h8 class="card-text">New York</h8>
+          <div class="details">
+            <div class="col">
+              <img src="/src/app/static/assets/humidity.svg">
+              <div>
+                <p class="humidity">50%</p>
+                <p>Humidity</p>
+              </div>
+            </div>
+            <div class="col">
+              <img src="/src/app/static/assets/wind.svg">
+              <div>
+                <p class="wind">15km/h</p>
+                <p>Wind</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

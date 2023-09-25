@@ -1,6 +1,3 @@
-from flask import Flask, request, jsonify, render_template
-from levenshtein import iata_search, city_search, massive_search
-
 import sys
 import time
 import requests
@@ -148,7 +145,3 @@ def get_weather(url1):
     data1 = res1.json()
     return (f"\nCountry: {data1['sys']['country']}\nName: {data1['name']}"+
         f"\nWeather: {data1['weather'][0]['main']}, {data1['weather'][0]['description']}.\nTemperature: {data1['main']['temp']} degrees celcius.\nHumidity: {data1['main']['humidity']}%.")
-
-# Tu código de funciones y procesamiento de datos aquí (como validLine, readData, etc.)
-
-
